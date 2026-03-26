@@ -1,20 +1,20 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { App } from './app';
-import { SupabaseService } from './supabase.service';
+import { SupabaseService } from './core/services/supabase.service';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [
+      providers: [provideRouter([]),
         {
           provide: SupabaseService,
           useValue: {
             getCards: () => new Promise((resolve) => setTimeout(() => resolve([]), 0)),
             saveGrade: async () => undefined,
           },
-        },
-      ],
+        }],
     }).compileComponents();
   });
 
@@ -24,10 +24,10 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render loading state', () => {
+  it('should render app shell', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.loading')?.textContent).toContain('Loading cards...');
+    expect(compiled.textContent).toContain('DuckyStudy');
   });
 });

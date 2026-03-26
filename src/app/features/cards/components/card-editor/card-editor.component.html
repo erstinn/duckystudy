@@ -1,0 +1,105 @@
+<form class="grid gap-5" (ngSubmit)="submit()">
+  <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+    <div>
+      <div class="mb-2 text-[11px] uppercase tracking-[0.16em] text-slate-400">
+        {{ mode === 'create' ? 'New Card' : 'Edit Card' }}
+      </div>
+      <h2 class="font-['Playfair_Display'] text-2xl">
+        {{ mode === 'create' ? 'Create a study card' : 'Update selected card' }}
+      </h2>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      @if (mode === 'edit') {
+        <button class="rounded-2xl border border-white/10 px-4 py-3 text-sm text-slate-300" type="button" (click)="reset()">Cancel</button>
+      }
+      <button class="rounded-2xl border border-teal-300/30 bg-teal-300/10 px-4 py-3 text-sm" type="submit">
+        {{ mode === 'create' ? 'Add card' : 'Save changes' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-2">
+    <label class="grid gap-2">
+      <span class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Lesson</span>
+      <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none placeholder:text-slate-500" [(ngModel)]="draft.lesson" name="lesson" placeholder="N3 L12" />
+    </label>
+
+    <label class="grid gap-2">
+      <span class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Section</span>
+      <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none placeholder:text-slate-500" [(ngModel)]="draft.section" name="section" placeholder="Core vocab" />
+    </label>
+
+    <label class="grid gap-2">
+      <span class="text-[11px] uppercase tracking-[0.16em] text-slate-400">English prompt</span>
+      <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none placeholder:text-slate-500" [(ngModel)]="draft.english" name="english" placeholder="to continue" />
+    </label>
+
+    <label class="grid gap-2">
+      <span class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Japanese answer</span>
+      <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none placeholder:text-slate-500" [(ngModel)]="draft.kanji" name="kanji" placeholder="続ける" />
+    </label>
+
+    <label class="grid gap-2">
+      <span class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Reading</span>
+      <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none placeholder:text-slate-500" [(ngModel)]="draft.hira" name="hira" placeholder="つづける" />
+    </label>
+
+    <label class="grid gap-2">
+      <span class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Part of speech</span>
+      <input class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none placeholder:text-slate-500" [(ngModel)]="draft.pos" name="pos" placeholder="verb" />
+    </label>
+  </div>
+
+  <label class="grid gap-2">
+    <span class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Definition / notes</span>
+    <textarea
+      class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none placeholder:text-slate-500"
+      [(ngModel)]="draft.definition"
+      name="definition"
+      rows="4"
+      placeholder="Describe the meaning and any nuance you want to show after reveal."
+    ></textarea>
+  </label>
+
+  <section class="grid gap-4 rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
+    <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+      <div>
+        <div class="mb-2 text-[11px] uppercase tracking-[0.16em] text-slate-400">Examples</div>
+        <h3 class="font-['Playfair_Display'] text-xl">Study examples shown after answering</h3>
+      </div>
+
+      <button class="rounded-2xl border border-white/10 px-4 py-3 text-sm text-slate-300" type="button" (click)="addExample()">Add example</button>
+    </div>
+
+    <div class="grid gap-4">
+      @for (example of draft.examples; track trackExample($index, example); let index = $index) {
+        <div class="grid gap-4 rounded-[1.25rem] border border-white/10 bg-slate-950/40 p-4">
+          <label class="grid gap-2">
+            <span class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Example sentence</span>
+            <textarea
+              class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none placeholder:text-slate-500"
+              [(ngModel)]="example.sourceText"
+              [name]="'example-source-' + index"
+              rows="2"
+              placeholder="会話はここから続けましょう。"
+            ></textarea>
+          </label>
+
+          <label class="grid gap-2">
+            <span class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Translation / explanation</span>
+            <textarea
+              class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none placeholder:text-slate-500"
+              [(ngModel)]="example.translationText"
+              [name]="'example-translation-' + index"
+              rows="2"
+              placeholder="Let's continue the conversation from here."
+            ></textarea>
+          </label>
+
+          <button class="w-fit rounded-2xl border border-rose-300/30 bg-rose-300/10 px-4 py-3 text-sm text-rose-200" type="button" (click)="removeExample(index)">Delete example</button>
+        </div>
+      }
+    </div>
+  </section>
+</form>

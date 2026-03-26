@@ -1,0 +1,100 @@
+<section class="grid w-full max-w-2xl gap-5 rounded-[2rem] border border-white/10 bg-slate-950/70 p-7 shadow-2xl backdrop-blur">
+  <div>
+    <div class="mb-2 text-[11px] uppercase tracking-[0.16em] text-slate-400">Settings</div>
+    <h2 class="font-['Playfair_Display'] text-3xl">Centered control panel</h2>
+    <p class="mt-3 text-sm leading-7 text-slate-400">
+      Simple for now, but structured for profile, SRS, localization, and reward tuning later.
+    </p>
+  </div>
+
+  <div class="grid gap-3">
+    <div class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Theme</div>
+    <div class="flex flex-wrap gap-2">
+      @for (theme of themeOptions; track theme) {
+        <button
+          class="rounded-2xl border px-4 py-3 text-sm transition"
+          type="button"
+          [ngClass]="
+            preferences.theme() === theme
+              ? 'border-teal-300/40 bg-teal-300/10 text-slate-100'
+              : 'border-white/10 bg-white/5 text-slate-400'
+          "
+          (click)="setTheme(theme)"
+        >
+          {{ theme }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="grid gap-3">
+    <div class="text-[11px] uppercase tracking-[0.16em] text-slate-400">UI language</div>
+    <div class="flex flex-wrap gap-2">
+      @for (language of languageOptions; track language) {
+        <button
+          class="rounded-2xl border px-4 py-3 text-sm transition"
+          type="button"
+          [ngClass]="
+            preferences.uiLanguage() === language
+              ? 'border-teal-300/40 bg-teal-300/10 text-slate-100'
+              : 'border-white/10 bg-white/5 text-slate-400'
+          "
+          (click)="setLanguage(language)"
+        >
+          {{ language === 'ja' ? 'Japanese' : 'English' }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="grid gap-3">
+    <div class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Preferred mode</div>
+    <div class="flex flex-wrap gap-2">
+      @for (mode of modeOptions; track mode) {
+        <button
+          class="rounded-2xl border px-4 py-3 text-sm transition"
+          type="button"
+          [ngClass]="
+            preferences.preferredMode() === mode
+              ? 'border-teal-300/40 bg-teal-300/10 text-slate-100'
+              : 'border-white/10 bg-white/5 text-slate-400'
+          "
+          (click)="setMode(mode)"
+        >
+          {{ mode }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="grid gap-3">
+    <label class="grid gap-2">
+      <span class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Daily goal</span>
+      <input
+        class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none"
+        type="number"
+        [ngModel]="preferences.dailyGoal()"
+        (ngModelChange)="setGoal($event)"
+        min="1"
+        max="500"
+      />
+    </label>
+  </div>
+
+  <div class="grid gap-3">
+    <label class="flex items-center justify-between gap-4">
+      <div>
+        <div class="text-[11px] uppercase tracking-[0.16em] text-slate-400">Reduce motion</div>
+        <div class="mt-1 text-sm leading-7 text-slate-400">
+          Useful once you start adding juicier transitions and results.
+        </div>
+      </div>
+      <input
+        class="h-5 w-5"
+        type="checkbox"
+        [ngModel]="preferences.reduceMotion()"
+        (ngModelChange)="setReduceMotion($event)"
+      />
+    </label>
+  </div>
+</section>
